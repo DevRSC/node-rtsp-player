@@ -1,17 +1,12 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3000; // Use the PORT environment variable if it exists
-
+const port = 3000;
 const Stream = require("node-rtsp-stream");
 
 let stream;
 
 // This is needed to parse the body of POST requests
 app.use(express.json());
-
-app.get("/ws-url", (req, res) => {
-  res.send({ wsUrl: process.env.WS_URL || "9999" });
-});
 
 app.post("/set-rtsp", (req, res) => {
   const rtspUrl = req.body.rtspUrl;

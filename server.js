@@ -10,7 +10,7 @@ let stream;
 app.use(express.json());
 
 app.get("/ws-url", (req, res) => {
-  res.send({ wsUrl: process.env.WS_URL || "localhost:9999" });
+  res.send({ wsUrl: process.env.WS_URL || "9999" });
 });
 
 app.post("/set-rtsp", (req, res) => {

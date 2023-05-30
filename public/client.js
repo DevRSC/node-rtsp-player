@@ -37,7 +37,7 @@ fetch("/ws-url")
       .then((data) => {
         console.log(data);
         // Start the video player
-        player = new JSMpeg.Player(`ws://${wsUrl}/`, {
+        player = new JSMpeg.Player(`wss://${wsUrl}/`, {
           canvas: document.getElementById("videoCanvas"),
           autoplay: true,
           audio: false,

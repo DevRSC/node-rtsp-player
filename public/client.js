@@ -27,7 +27,7 @@ fetch("/set-rtsp", {
   .then((data) => {
     console.log(data);
     // Start the video player
-    player = new JSMpeg.Player(`ws://${location.hostname}:9999/`, {
+    player = new JSMpeg.Player(`wss://${location.hostname}:9999/`, {
       canvas: document.getElementById("videoCanvas"),
       autoplay: true,
       audio: false,

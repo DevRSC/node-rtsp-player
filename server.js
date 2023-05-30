@@ -9,6 +9,10 @@ let stream;
 // This is needed to parse the body of POST requests
 app.use(express.json());
 
+app.get("/ws-url", (req, res) => {
+  res.send({ wsUrl: process.env.WS_URL || "localhost:9999" });
+});
+
 app.post("/set-rtsp", (req, res) => {
   const rtspUrl = req.body.rtspUrl;
 

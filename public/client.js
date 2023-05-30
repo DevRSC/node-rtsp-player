@@ -6,6 +6,8 @@ fetch("/ws-url")
   .then((data) => {
     let wsUrl = data.wsUrl; // Now you have wsUrl
 
+    console.log("WebSocket URL:", wsUrl);
+
     // Now the rest of your code goes here...
 
     let rtspUrl = window.prompt(

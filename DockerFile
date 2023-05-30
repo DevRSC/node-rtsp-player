@@ -1,0 +1,23 @@
+# Use a Node.js image from Docker Hub
+FROM node:14
+
+# Set the working directory
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Bundle app source
+COPY . .
+
+# Make sure ffmpeg is installed
+RUN apt-get update && apt-get install -y ffmpeg
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Start the app
+CMD [ "node", "server.js" ]

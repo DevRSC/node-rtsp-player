@@ -1,3 +1,5 @@
+let wsUrl = process.env.WS_URL || "localhost:9999";
+
 let rtspUrl = window.prompt(
   "Enter the RTSP link in the format 'rtsp://server.com/path'. If your RTSP server requires a username and password, do not include it here. You will be prompted for these in the next steps."
 );
@@ -27,7 +29,7 @@ fetch("/set-rtsp", {
   .then((data) => {
     console.log(data);
     // Start the video player
-    player = new JSMpeg.Player("ws://localhost:9999/", {
+    player = new JSMpeg.Player(`ws://${wsUrl}/`, {
       canvas: document.getElementById("videoCanvas"),
       autoplay: true,
       audio: false,

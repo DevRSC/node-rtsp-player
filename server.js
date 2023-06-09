@@ -1,12 +1,12 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000; // Use the PORT environment variable if it exists
 
 const Stream = require("node-rtsp-stream");
-const ffmpegStatic = require("ffmpeg-static");
 
 let stream;
 
+// This is needed to parse the body of POST requests
 app.use(express.json());
 
 app.get("/ws-url", (req, res) => {
@@ -16,27 +16,30 @@ app.get("/ws-url", (req, res) => {
 app.post("/set-rtsp", (req, res) => {
   const rtspUrl = req.body.rtspUrl;
 
+  // Check if a stream is already running and stop it if it is
   if (stream) {
     stream.stop();
   }
 
+  // Start a new stream with the new URL
   stream = new Stream({
     name: "name",
     streamUrl: rtspUrl,
     wsPort: 6789,
-    ffmpegPath: ffmpegStatic.path, // Add this line
     ffmpegOptions: {
-      "-f": "mpegts",
-      "-codec:v": "mpeg1video",
-      "-b:v": "1000k",
+      "-rtsp_transport": "tcp", // Add this line
+      "-f": "mpegts", // output file format.
+      "-codec:v": "mpeg1video", // video codec
+      "-b:v": "1000k", // video bit rate
       "-stats": "",
-      "-r": 25,
-      "-s": "640x480",
+      "-r": 25, // frame rate
+      "-s": "640x480", // video size
       "-bf": 0,
-      "-codec:a": "mp2",
-      "-ar": 44100,
-      "-ac": 1,
-      "-b:a": "128k",
+      // audio
+      "-codec:a": "mp2", // audio codec
+      "-ar": 44100, // sampling rate (in Hz)(in Hz)
+      "-ac": 1, // number of audio channels
+      "-b:a": "128k", // audio bit rate
     },
   });
 

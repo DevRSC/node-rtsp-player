@@ -14,36 +14,42 @@ app.get("/ws-url", (req, res) => {
 });
 
 app.post("/set-rtsp", (req, res) => {
-  const rtspUrl = req.body.rtspUrl;
+  try {
+    const rtspUrl = req.body.rtspUrl;
 
-  // Check if a stream is already running and stop it if it is
-  if (stream) {
-    stream.stop();
+    // Check if a stream is already running and stop it if it is
+    if (stream) {
+      stream.stop();
+    }
+
+    // Start a new stream with the new URL
+    stream = new Stream({
+      name: "name",
+      streamUrl: rtspUrl,
+      wsPort: 6789,
+      ffmpegOptions: {
+        "-rtsp_transport": "tcp", // Add this line
+        "-rtsp_flags": "prefer_tcp", // New line
+        "-f": "mpegts", // output file format.
+        "-codec:v": "mpeg1video", // video codec
+        "-b:v": "1000k", // video bit rate
+        "-stats": "",
+        "-r": 25, // frame rate
+        "-s": "640x480", // video size
+        "-bf": 0,
+        // audio
+        "-codec:a": "mp2", // audio codec
+        "-ar": 44100, // sampling rate (in Hz)(in Hz)
+        "-ac": 1, // number of audio channels
+        "-b:a": "128k", // audio bit rate
+      },
+    });
+
+    res.status(200).send("RTSP URL updated and stream started.");
+  } catch (error) {
+    console.error(`Error setting RTSP: ${error}`);
+    res.status(500).send(`Error setting RTSP: ${error}`);
   }
-
-  // Start a new stream with the new URL
-  stream = new Stream({
-    name: "name",
-    streamUrl: rtspUrl,
-    wsPort: 6789,
-    ffmpegOptions: {
-      "-rtsp_transport": "tcp", // Add this line
-      "-f": "mpegts", // output file format.
-      "-codec:v": "mpeg1video", // video codec
-      "-b:v": "1000k", // video bit rate
-      "-stats": "",
-      "-r": 25, // frame rate
-      "-s": "640x480", // video size
-      "-bf": 0,
-      // audio
-      "-codec:a": "mp2", // audio codec
-      "-ar": 44100, // sampling rate (in Hz)(in Hz)
-      "-ac": 1, // number of audio channels
-      "-b:a": "128k", // audio bit rate
-    },
-  });
-
-  res.status(200).send("RTSP URL updated and stream started.");
 });
 
 app.use(express.static("public"));

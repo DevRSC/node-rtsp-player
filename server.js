@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000; // Use the PORT environment variable if it exists
+const ffmpegPath = require("ffmpeg-static");
 
 const Stream = require("node-rtsp-stream");
 
@@ -27,9 +28,8 @@ app.post("/set-rtsp", (req, res) => {
       name: "name",
       streamUrl: rtspUrl,
       wsPort: 6789,
+      ffmpegPath: ffmpegPath, // Provide path to static FFmpeg binary
       ffmpegOptions: {
-        "-rtsp_transport": "tcp", // Add this line
-        "-rtsp_flags": "prefer_tcp", // New line
         "-f": "mpegts", // output file format.
         "-codec:v": "mpeg1video", // video codec
         "-b:v": "1000k", // video bit rate

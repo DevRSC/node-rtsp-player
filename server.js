@@ -27,7 +27,7 @@ app.post("/set-rtsp", (req, res) => {
     stream = new Stream({
       name: "name",
       streamUrl: rtspUrl,
-      wsPort: 6789,
+      wsPort: process.env.WS_URL || "6789",
       ffmpegPath: ffmpegPath, // Provide path to static FFmpeg binary
       ffmpegOptions: {
         "-f": "mpegts", // output file format.

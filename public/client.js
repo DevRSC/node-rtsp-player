@@ -7,6 +7,7 @@ fetch("/ws-url")
     let wsUrl = data.wsUrl; // Now you have wsUrl
 
     console.log(`wsUrl is: ${wsUrl}`);
+    console.log("Here is the", location.hostname);
 
     // Now the rest of your code goes here...
 
@@ -39,7 +40,7 @@ fetch("/ws-url")
       .then((data) => {
         console.log(data);
         // Start the video player
-        player = new JSMpeg.Player(`wss://${location.hostname}:${wsUrl}/`, {
+        player = new JSMpeg.Player(`ws://${location.hostname}:${wsUrl}/`, {
           canvas: document.getElementById("videoCanvas"),
           autoplay: true,
         });
